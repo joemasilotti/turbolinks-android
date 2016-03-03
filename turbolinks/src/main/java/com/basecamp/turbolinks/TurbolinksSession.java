@@ -133,7 +133,7 @@ public class TurbolinksSession implements TurbolinksScrollUpCallback {
                 if ((currentOverrideTime - previousOverrideTime) > 500) {
                     previousOverrideTime = currentOverrideTime;
                     TurbolinksLog.d("Overriding load: " + location);
-                    visitProposedToLocationWithAction(location, ACTION_ADVANCE);
+                    visitProposedToLocationWithAction(location, ACTION_ADVANCE, null);
                 }
 
                 return true;
@@ -367,7 +367,7 @@ public class TurbolinksSession implements TurbolinksScrollUpCallback {
         TurbolinksHelper.runOnMainThread(applicationContext, new Runnable() {
             @Override
             public void run() {
-                turbolinksAdapter.visitProposedToLocationWithAction(location, action);
+                turbolinksAdapter.visitProposedToLocationWithAction(location, action, target);
             }
         });
     }
