@@ -54,12 +54,12 @@ TLWebView.prototype = {
     // -----------------------------------------------------------------------
 
     visitProposedToLocationWithAction: function(location, action, target) {
-        var targetHTML = ""
-        if (target !== null) {
-            targetHTML = target.outerHTML;
-        }
-
-        TurbolinksNative.visitProposedToLocationWithAction(location.absoluteURL, action, targetHTML);
+      if (target !== null) {
+        data = JSON.stringify(target.dataset);
+      } else {
+        data = JSON.stringify({});
+      }
+      TurbolinksNative.visitProposedToLocationWithAction(location.absoluteURL, action, data);
     },
 
     visitStarted: function(visit) {
