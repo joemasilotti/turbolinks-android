@@ -10,6 +10,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import java.util.HashMap;
  * <p>The main concrete class to use Turbolinks 5 in your app.</p>
  */
 public class TurbolinksSession {
+    private static final String TAG = "TurbolinksSession";
 
     // ---------------------------------------------------
     // Package public vars (allows for greater flexibility and access for testing)
@@ -79,6 +81,18 @@ public class TurbolinksSession {
         this.webView.addJavascriptInterface(this, JAVASCRIPT_INTERFACE_NAME);
         this.webView.setWebViewClient(new WebViewClient() {
             @Override
+            public void onLoadResource(WebView view, String url) {
+                Log.d(TAG, "onLoadResource: " + url);
+                super.onLoadResource(view, url);
+            }
+
+            @Override
+            public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+                Log.d(TAG, "shouldInterceptRequest: " + String.format("url: %s, method: %s, headers: %s", request.getUrl(), request.getMethod(), request.getRequestHeaders().toString()));
+                return super.shouldInterceptRequest(view, request);
+            }
+
+            @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 coldBootInProgress = true;
             }
@@ -103,6 +117,8 @@ public class TurbolinksSession {
              */
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String location) {
+                Log.d(TAG, "shouldOverrideUrlLoading: " + location);
+
                 if (!turbolinksIsReady || coldBootInProgress) {
                     return false;
                 }
