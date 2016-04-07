@@ -22,11 +22,13 @@ public class TurbolinksWebViewClient extends WebViewClient {
     public void onLoadResource(WebView view, String url) {
         super.onLoadResource(view, url);
         session.turbolinksAdapter.onLoadResource(url);
+        TurbolinksLog.d("onLoadResource: " + url);
     }
 
     @Override
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
         session.coldBootInProgress = true;
+        TurbolinksLog.d("onPageStarted: " + url);
     }
 
     @Override
