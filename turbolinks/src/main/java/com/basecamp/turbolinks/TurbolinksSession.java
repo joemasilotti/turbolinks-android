@@ -10,6 +10,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import java.util.HashMap;
  * <p>The main concrete class to use Turbolinks 5 in your app.</p>
  */
 public class TurbolinksSession {
+    private static final String TAG = "TurbolinksSession";
 
     // ---------------------------------------------------
     // Package public vars (allows for greater flexibility and access for testing)
@@ -77,72 +79,7 @@ public class TurbolinksSession {
         this.applicationContext = context.getApplicationContext();
         this.webView = TurbolinksHelper.createWebView(applicationContext);
         this.webView.addJavascriptInterface(this, JAVASCRIPT_INTERFACE_NAME);
-        this.webView.setWebViewClient(new WebViewClient() {
-            @Override
-            public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                coldBootInProgress = true;
-            }
-
-            @Override
-            public void onPageFinished(WebView view, String location) {
-                if (!turbolinksBridgeInjected) {
-                    TurbolinksJavascriptInjector.injectTurbolinksBridge(TurbolinksSession.this, applicationContext, webView);
-                    turbolinksAdapter.onPageFinished();
-
-                    TurbolinksLog.d("Page finished: " + location);
-                }
-            }
-
-            /**
-             * Turbolinks will not call adapter.visitProposedToLocationWithAction in some cases,
-             * like target=_blank or when the domain doesn't match. We still route those here.
-             * This is mainly only called when links within a webView are clicked and not during
-             * loadUrl. However, a redirect on a cold boot can also cause this to fire, so don't
-             * override in that situation, since Turbolinks is not yet ready.
-             * http://stackoverflow.com/a/6739042/3280911
-             */
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String location) {
-                if (!turbolinksIsReady || coldBootInProgress) {
-                    return false;
-                }
-
-                /**
-                 * Prevents firing twice in a row within a few milliseconds of each other, which
-                 * happens. So we check for a slight delay between requests, which is plenty of time
-                 * to allow for a user to click the same link again.
-                 */
-                long currentOverrideTime = new Date().getTime();
-                if ((currentOverrideTime - previousOverrideTime) > 500) {
-                    previousOverrideTime = currentOverrideTime;
-                    TurbolinksLog.d("Overriding load: " + location);
-                    visitProposedToLocationWithAction(location, ACTION_ADVANCE, null);
-                }
-
-                return true;
-            }
-
-            @Override
-            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                super.onReceivedError(view, errorCode, description, failingUrl);
-                resetToColdBoot();
-
-                turbolinksAdapter.onReceivedError(errorCode);
-                TurbolinksLog.d("onReceivedError: " + errorCode);
-            }
-
-            @Override
-            @TargetApi(Build.VERSION_CODES.M)
-            public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
-                super.onReceivedHttpError(view, request, errorResponse);
-
-                if (request.isForMainFrame()) {
-                    resetToColdBoot();
-                    turbolinksAdapter.onReceivedError(errorResponse.getStatusCode());
-                    TurbolinksLog.d("onReceivedHttpError: " + errorResponse.getStatusCode());
-                }
-            }
-        });
+        this.webView.setWebViewClient(new TurbolinksWebViewClient(this));
     }
 
     // ---------------------------------------------------

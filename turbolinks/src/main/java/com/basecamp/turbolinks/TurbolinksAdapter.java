@@ -1,5 +1,7 @@
 package com.basecamp.turbolinks;
 
+import android.webkit.WebViewClient;
+
 /**
  * <p>Defines callbacks that Turbolinks makes available to your app. This interface is required, and
  * should be implemented in an activity (or similar class).</p>
@@ -47,4 +49,25 @@ public interface TurbolinksAdapter {
      * @param action Whether to treat the request as an advance (navigating forward) or a replace (back).
      */
     void visitProposedToLocationWithAction(String location, String action, String target);
+
+    /**
+     * <p>Called by TurbolinksWebClient after some Turbolinks processing.</p>
+     *
+     * @see TurbolinksWebViewClient#shouldOverrideUrlLoading(android.webkit.WebView, java.lang.String)
+     * @see WebViewClient#shouldOverrideUrlLoading(android.webkit.WebView, java.lang.String)
+     *
+     * @param url The URL to be loaded
+     * @return true if the host application wants to handle the URL itself, otherwise return false
+     */
+    boolean shouldOverrideUrlLoading(String url);
+
+    /**
+     * <p>Take action after a URL is loaded in an active WebView.</p>
+     *
+     * @see com.basecamp.turbolinks.TurbolinksWebViewClient#onLoadResource(android.webkit.WebView, java.lang.String)
+     * @see WebViewClient#onLoadResource(android.webkit.WebView, java.lang.String)
+     *
+     * @param url
+     */
+    void onLoadResource(String url);
 }
