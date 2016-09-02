@@ -361,7 +361,7 @@ public class TurbolinksSession implements TurbolinksScrollUpCallback {
      */
     @SuppressWarnings("unused")
     @android.webkit.JavascriptInterface
-    public void visitProposedToLocationWithAction(final String location, final String action) {
+    public void visitProposedToLocationWithAction(final String location, final String action, final String target) {
         TurbolinksLog.d("visitProposedToLocationWithAction called");
 
         TurbolinksHelper.runOnMainThread(applicationContext, new Runnable() {
