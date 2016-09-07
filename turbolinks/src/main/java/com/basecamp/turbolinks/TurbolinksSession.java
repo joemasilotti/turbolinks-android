@@ -254,14 +254,14 @@ public class TurbolinksSession implements TurbolinksScrollUpCallback {
      */
     public TurbolinksSession view(TurbolinksView turbolinksView) {
         this.turbolinksView = turbolinksView;
-        this.turbolinksView.getRefreshLayout().setCallback(this);
-        this.turbolinksView.getRefreshLayout().setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                visitLocationWithAction(location, ACTION_REPLACE);
-            }
-        });
-        this.webViewAttachedToNewParent = this.turbolinksView.attachWebView(webView, screenshotsEnabled, pullToRefreshEnabled);
+//        this.turbolinksView.getRefreshLayout().setCallback(this);
+//        this.turbolinksView.getRefreshLayout().setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                visitLocationWithAction(location, ACTION_REPLACE);
+//            }
+//        });
+        this.webViewAttachedToNewParent = this.turbolinksView.attachWebView(webView, screenshotsEnabled/*, pullToRefreshEnabled*/);
 
         return this;
     }
@@ -475,7 +475,7 @@ public class TurbolinksSession implements TurbolinksScrollUpCallback {
                 @Override
                 public void run() {
                     turbolinksAdapter.visitCompleted();
-                    turbolinksView.getRefreshLayout().setRefreshing(false);
+//                    turbolinksView.getRefreshLayout().setRefreshing(false);
                 }
             });
         }
