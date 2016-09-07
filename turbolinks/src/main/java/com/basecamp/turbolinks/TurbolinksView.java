@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -150,6 +151,10 @@ public class TurbolinksView extends FrameLayout {
      */
     boolean attachWebView(WebView webView, boolean screenshotsEnabled/*, boolean pullToRefreshEnabled*/) {
 //        if (webView.getParent() == refreshLayout) return false;
+        ViewGroup parent = (ViewGroup) webView.getParent();
+        if (parent != null) {
+            parent.removeView(webView);
+        }
 //
 //        refreshLayout.setEnabled(pullToRefreshEnabled);
 //
@@ -167,6 +172,7 @@ public class TurbolinksView extends FrameLayout {
 //        }
 //
 //        refreshLayout.addView(webView);
+        //        if (webView.getParent() == refreshLayout) return false;
         addView(webView, 0);
         return true;
     }
