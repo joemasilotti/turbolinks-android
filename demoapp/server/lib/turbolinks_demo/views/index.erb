@@ -1,8 +1,31 @@
-<p><strong>Hello from Turbolinks!</strong> This demo app will help you get acquainted with the framework.</p>
+<style>
+.bg {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: url('https://help.basecamp.com/images/logo-bc.png') no-repeat top left;
+  background-size: cover;
 
-<ul>
-  <li><a href="/one">Open a new activity</a> by following a regular link.</li>
-  <li><a href="/slow">See the loading indicator</a> and test Turbolinks’ preview cache with this slow-loading page.</li>
-  <li><a href="/nonexistent">Trigger an HTTP 404</a> to see how Turbolinks handles error responses.</li>
-  <!-- <li><a href="#">Sign out</a> to see how to handle an unauthorized session using a separate web view.</a></li> -->
-</ul>
+}
+.content {
+  position: absolute;
+  right: 16px;
+  left: 16px;
+  bottom: 0;
+}
+</style>
+
+<div class="bg">
+  <div class="content">
+    <p><strong>Hello from Turbolinks!</strong> This demo app will help you get acquainted with the framework.</p>
+
+    <ul>
+      <li><a href="/one">Open a new activity</a> by following a regular link.</li>
+      <li><a href="/slow">See the loading indicator</a> and test Turbolinks’ preview cache with this slow-loading page.</li>
+      <li><a href="/nonexistent">Trigger an HTTP 404</a> to see how Turbolinks handles error responses.</li>
+      <!-- <li><a href="#">Sign out</a> to see how to handle an unauthorized session using a separate web view.</a></li> -->
+    </ul>
+  </div>
+</div>
