@@ -267,6 +267,15 @@ public class TurbolinksSession implements TurbolinksScrollUpCallback {
     }
 
     /**
+     * Workaround for android 7
+     * It fixes the issue where web view gets detached from acivity's UI when activity is resumed from back stack
+     */
+    public void attachWebViewIfNeeded() {
+        if (!webView.isAttachedToWindow())
+            this.webViewAttachedToNewParent = this.turbolinksView.attachWebView(webView, screenshotsEnabled);
+    }
+
+    /**
      * <p><b>REQUIRED</b> Executes a Turbolinks visit. Must be called at the end of the chain --
      * all required parameters will first be validated before firing.</p>
      *
