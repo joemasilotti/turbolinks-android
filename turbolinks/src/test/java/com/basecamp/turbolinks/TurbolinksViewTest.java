@@ -23,18 +23,18 @@ public class TurbolinksViewTest extends BaseTest {
         MockitoAnnotations.initMocks(this);
     }
 
-    @Test
-    public void getRefreshLayout() {
-        TurbolinksView view = new TurbolinksView(context);
+//    @Test
+//    public void getRefreshLayout() {
+//        TurbolinksView view = new TurbolinksView(context);
+//
+//        assertThat(view.getRefreshLayout()).isNotNull();
+//    }
 
-        assertThat(view.getRefreshLayout()).isNotNull();
-    }
-
-    @Test
-    public void attachWebView() {
-        TurbolinksView view = new TurbolinksView(context);
-        view.attachWebView(webView, false, false);
-
-        assertThat(view.getRefreshLayout().getChildAt(1)).isEqualTo(webView);
-    }
+//    @Test
+//    public void attachWebView() {
+//        TurbolinksView view = new TurbolinksView(context);
+//        view.attachWebView(webView, false, false);
+//
+//        assertThat(view.getRefreshLayout().getChildAt(1)).isEqualTo(webView);
+//    }
 }
