@@ -258,7 +258,7 @@ public class TurbolinksSession implements TurbolinksScrollUpCallback {
         this.turbolinksView.getRefreshLayout().setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                visitLocationWithAction(location, ACTION_REPLACE);
+                visitLocationWithAction(location, ACTION_ADVANCE);
             }
         });
         this.webViewAttachedToNewParent = this.turbolinksView.attachWebView(webView, screenshotsEnabled, pullToRefreshEnabled);
@@ -279,7 +279,7 @@ public class TurbolinksSession implements TurbolinksScrollUpCallback {
 
         validateRequiredParams();
 
-        if (webViewAttachedToNewParent) {
+        if (!turbolinksIsReady || webViewAttachedToNewParent) {
             initProgressView();
         }
 
@@ -425,6 +425,7 @@ public class TurbolinksSession implements TurbolinksScrollUpCallback {
     @android.webkit.JavascriptInterface
     public void visitRequestFailedWithStatusCode(final String visitIdentifier, final int statusCode) {
         TurbolinksLog.d("visitRequestFailedWithStatusCode called");
+        hideProgressView(visitIdentifier);
 
         if (TextUtils.equals(visitIdentifier, currentVisitIdentifier)) {
             TurbolinksHelper.runOnMainThread(applicationContext, new Runnable() {
@@ -531,7 +532,6 @@ public class TurbolinksSession implements TurbolinksScrollUpCallback {
                 if (turbolinksIsReady && TextUtils.equals(visitIdentifier, currentVisitIdentifier)) {
                     TurbolinksLog.d("Hiding progress view for visitIdentifier: " + visitIdentifier + ", currentVisitIdentifier: " + currentVisitIdentifier);
                     turbolinksView.hideProgress();
-                    progressView = null;
                 }
             }
         });
@@ -708,6 +708,7 @@ public class TurbolinksSession implements TurbolinksScrollUpCallback {
      * @param action   Whether to treat the request as an advance (navigating forward) or a replace (back).
      */
     public void visitLocationWithAction(String location, String action) {
+        this.location = location;
         runJavascript("webView.visitLocationWithActionAndRestorationIdentifier", TurbolinksHelper.encodeUrl(location), action, getRestorationIdentifierFromMap());
     }
 

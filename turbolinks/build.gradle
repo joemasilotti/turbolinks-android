@@ -21,8 +21,12 @@ android {
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 24
-        versionCode 5
-        versionName "1.0.3"
+        versionCode 6
+        versionName "1.0.4"
+
+        // Define ProGuard rules for this android library project. These rules will be applied when
+        // a consumer of this library sets 'minifyEnabled true'.
+        consumerProguardFiles 'proguard-consumer-rules.pro'
     }
     buildTypes {
         release {
@@ -39,7 +43,7 @@ dependencies {
     compile 'org.apache.commons:commons-lang3:3.4'
 
     testCompile 'org.assertj:assertj-core:1.7.0'
-    testCompile 'org.robolectric:robolectric:3.0'
+    testCompile 'org.robolectric:robolectric:3.1.2'
     testCompile 'org.mockito:mockito-core:1.10.19'
     testCompile 'junit:junit:4.12'
 }
@@ -53,7 +57,7 @@ ext {
 
     libraryName = 'Turbolinks Android'
     libraryDescription = 'Turbolinks for Android'
-    libraryVersion = '1.0.3'
+    libraryVersion = '1.0.4'
 
     siteUrl = 'https://github.com/basecamp/turbolinks-android'
     gitUrl = 'https://github.com/basecamp/turbolinks-android.git'
