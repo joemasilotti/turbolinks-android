@@ -40,10 +40,6 @@ class TurbolinksHelper {
         WebView webView = new WebView(contextWrapper);
         configureWebViewDefaults(webView);
         setWebViewLayoutParams(webView);
-
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        webView.setLayoutParams(params);
-
         return webView;
     }
 
