@@ -28,6 +28,8 @@ import java.util.HashMap;
  */
 public class TurbolinksSession implements TurbolinksScrollUpCallback {
 
+    private final SwipeRefreshLayout.OnRefreshListener externalOnRefreshListener;
+
     // ---------------------------------------------------
     // Package public vars (allows for greater flexibility and access for testing)
     // ---------------------------------------------------
@@ -75,10 +77,12 @@ public class TurbolinksSession implements TurbolinksScrollUpCallback {
      *
      * @param context Any Android context.
      */
-    private TurbolinksSession(final Context context) {
+    private TurbolinksSession(final Context context, SwipeRefreshLayout.OnRefreshListener onRefreshListener) {
         if (context == null) {
             throw new IllegalArgumentException("Context must not be null.");
         }
+
+        this.externalOnRefreshListener = onRefreshListener;
 
         this.applicationContext = context.getApplicationContext();
         this.screenshotsEnabled = true;
@@ -173,10 +177,10 @@ public class TurbolinksSession implements TurbolinksScrollUpCallback {
      * @param context Any Android context.
      * @return TurbolinksSession to be managed by the calling application.
      */
-    public static TurbolinksSession getNew(Context context) {
+    public static TurbolinksSession getNew(Context context, SwipeRefreshLayout.OnRefreshListener onRefreshListener) {
         TurbolinksLog.d("TurbolinksSession getNew called");
 
-        return new TurbolinksSession(context);
+        return new TurbolinksSession(context, onRefreshListener);
     }
 
     /**
@@ -186,12 +190,12 @@ public class TurbolinksSession implements TurbolinksScrollUpCallback {
      * @param context Any Android context.
      * @return The default, static instance of a TurbolinksSession, guaranteed to not be null.
      */
-    public static TurbolinksSession getDefault(Context context) {
+    public static TurbolinksSession getDefault(Context context, SwipeRefreshLayout.OnRefreshListener onRefreshListener) {
         if (defaultInstance == null) {
             synchronized (TurbolinksSession.class) {
                 if (defaultInstance == null) {
                     TurbolinksLog.d("Default instance is null, creating new");
-                    defaultInstance = TurbolinksSession.getNew(context);
+                    defaultInstance = TurbolinksSession.getNew(context, onRefreshListener);
                 }
             }
         }
@@ -259,6 +263,9 @@ public class TurbolinksSession implements TurbolinksScrollUpCallback {
             @Override
             public void onRefresh() {
                 visitLocationWithAction(location, ACTION_ADVANCE);
+                if (externalOnRefreshListener != null) {
+                    externalOnRefreshListener.onRefresh();
+                }
             }
         });
         this.webViewAttachedToNewParent = this.turbolinksView.attachWebView(webView, screenshotsEnabled, pullToRefreshEnabled);

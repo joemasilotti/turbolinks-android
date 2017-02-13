@@ -35,7 +35,7 @@ public class TurbolinksSessionTest extends BaseTest {
         MockitoAnnotations.initMocks(this);
 
         view = new TurbolinksView(context);
-        turbolinksSession = TurbolinksSession.getNew(context);
+        turbolinksSession = TurbolinksSession.getNew(context, null);
     }
 
     // -----------------------------------------------------------------------
@@ -44,24 +44,24 @@ public class TurbolinksSessionTest extends BaseTest {
 
     @Test
     public void getNewIsAlwaysNewInstance() {
-        TurbolinksSession defaultInstance = TurbolinksSession.getNew(context);
+        TurbolinksSession defaultInstance = TurbolinksSession.getNew(context, null);
 
-        assertThat(defaultInstance).isNotEqualTo(TurbolinksSession.getNew(context));
+        assertThat(defaultInstance).isNotEqualTo(TurbolinksSession.getNew(context, null));
     }
 
     @Test
     public void getDefaultReturnsSameInstance() {
-        TurbolinksSession defaultInstance = TurbolinksSession.getDefault(context);
+        TurbolinksSession defaultInstance = TurbolinksSession.getDefault(context, null);
 
-        assertThat(defaultInstance).isEqualTo(TurbolinksSession.getDefault(context));
+        assertThat(defaultInstance).isEqualTo(TurbolinksSession.getDefault(context, null));
     }
 
     @Test
     public void resetDefaultGetsNewDefaultInstance() {
-        TurbolinksSession defaultInstance = TurbolinksSession.getDefault(context);
+        TurbolinksSession defaultInstance = TurbolinksSession.getDefault(context, null);
         TurbolinksSession.resetDefault();
 
-        assertThat(defaultInstance).isNotEqualTo(TurbolinksSession.getDefault(context));
+        assertThat(defaultInstance).isNotEqualTo(TurbolinksSession.getDefault(context, null));
     }
 
     // -----------------------------------------------------------------------
