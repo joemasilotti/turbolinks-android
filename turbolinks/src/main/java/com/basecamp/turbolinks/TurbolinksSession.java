@@ -264,7 +264,11 @@ public class TurbolinksSession implements TurbolinksScrollUpCallback {
             public void onRefresh() {
                 visitLocationWithAction(location, ACTION_ADVANCE);
                 if (externalOnRefreshListener != null) {
-                    externalOnRefreshListener.onRefresh();
+                    try {
+                        externalOnRefreshListener.onRefresh();
+                    } catch (Exception e) {
+                        TurbolinksLog.e("Error while executing external SwipeRefreshLayout.OnRefreshListener: " + e.toString());
+                    }
                 }
             }
         });
