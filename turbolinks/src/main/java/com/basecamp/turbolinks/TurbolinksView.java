@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
@@ -27,6 +28,7 @@ import android.widget.ImageView;
  * <p>The custom view to add to your activity layout.</p>
  */
 public class TurbolinksView extends FrameLayout {
+    public static final String TAG = TurbolinksView.class.getSimpleName();
     private TurbolinksSwipeRefreshLayout refreshLayout = null;
     private View progressView = null;
     private ImageView screenshotView = null;
@@ -157,8 +159,15 @@ public class TurbolinksView extends FrameLayout {
             TurbolinksSwipeRefreshLayout previousRefreshLayout = (TurbolinksSwipeRefreshLayout) webView.getParent();
             TurbolinksView previousTurbolinksView = (TurbolinksView) previousRefreshLayout.getParent();
 
-            if (screenshotsEnabled) previousTurbolinksView.screenshotView();
-            previousRefreshLayout.removeView(webView);
+            if (screenshotsEnabled)
+                previousTurbolinksView.screenshotView();
+
+            try {
+                previousRefreshLayout.removeView(webView);
+            } catch (Exception ex) {
+                Log.d(TAG, "Exception" + ex.getMessage());
+            }
+
         }
 
         // Set the webview background to match the container background
