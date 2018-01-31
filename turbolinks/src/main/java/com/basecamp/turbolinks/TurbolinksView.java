@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -165,7 +166,7 @@ public class TurbolinksView extends FrameLayout {
             try {
                 previousRefreshLayout.removeView(webView);
             } catch (Exception ex) {
-                Log.d(TAG, "Exception" + ex.getMessage());
+                TurbolinksLog.e("Error removing webview from parent: " + ex.toString());
             }
 
         }
@@ -174,6 +175,9 @@ public class TurbolinksView extends FrameLayout {
         if (getBackground() instanceof ColorDrawable) {
             webView.setBackgroundColor(((ColorDrawable) getBackground()).getColor());
         }
+
+        if (webView.getParent() != null)
+            ((ViewGroup) webView.getParent()).removeView(webView);
 
         refreshLayout.addView(webView);
         return true;
