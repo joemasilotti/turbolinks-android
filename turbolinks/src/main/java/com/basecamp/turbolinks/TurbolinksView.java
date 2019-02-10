@@ -164,10 +164,19 @@ public class TurbolinksView extends FrameLayout {
                 previousTurbolinksView.screenshotView();
 
             try {
+
+            try {
+                // This is an admittedly hacky workaround, but it buys us some time as we investigate
+                // a potential bug with Chrome 64, which is currently throwing an IllegalStateException
+                // when accessibility services (like Talkback or 1password) are enabled.
+                // We're tracking this bug on the Chromium issue tracker:
+                // https://bugs.chromium.org/p/chromium/issues/detail?id=806108
                 previousRefreshLayout.removeView(webView);
-            } catch (Exception ex) {
+            } catch (Exception e) {
                 TurbolinksLog.e("Error removing webview from parent: " + ex.toString());
+                previousRefreshLayout.removeView(webView);
             }
+        }
 
         }
 
@@ -185,6 +194,7 @@ public class TurbolinksView extends FrameLayout {
 
     /**
      * <p>Gets the refresh layout used internally for pull-to-refresh functionality.</p>
+     *
      * @return The internal refresh layout.
      */
     TurbolinksSwipeRefreshLayout getRefreshLayout() {
@@ -235,9 +245,12 @@ public class TurbolinksView extends FrameLayout {
 
     /**
      * <p>Creates a bitmap screenshot of the webview contents from the canvas.</p>
+     *
      * @return The screenshot of the webview contents.
      */
     private Bitmap getScreenshotBitmap() {
+        if (!hasEnoughHeapMemoryForScreenshot()) return null;
+
         if (getWidth() <= 0 || getHeight() <= 0) return null;
 
         Bitmap bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
@@ -247,9 +260,29 @@ public class TurbolinksView extends FrameLayout {
 
     /**
      * Gets the current orientation of the device.
+     *
      * @return The current orientation.
      */
     private int getOrientation() {
         return getContext().getResources().getConfiguration().orientation;
     }
+
+    /**
+     * Determines if the app's memory heap has enough space to create a bitmapped screenshot without
+     * running into an OOM.
+     *
+     * @return Whether the heap has over a given % of memory available.
+     */
+    private boolean hasEnoughHeapMemoryForScreenshot() {
+        final Runtime runtime = Runtime.getRuntime();
+
+        // Auto casting to floats necessary for division
+        float free = runtime.freeMemory();
+        float total = runtime.totalMemory();
+        float remaining = free / total;
+
+        TurbolinksLog.d("Memory remaining percentage: " + remaining);
+
+        return remaining > .10;
+}
 }

@@ -28,7 +28,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.basecamp:turbolinks:1.0.4'
+    compile 'com.basecamp:turbolinks:1.0.9'
 }
 ```
 
@@ -68,7 +68,7 @@ Right off the bat, you don't need to worry about handling every callback, especi
 
 **But at the very minimum, you must handle the [visitProposedToLocationWithAction](#visitproposedtolocationwithaction)**. Otherwise your app won't know what to do when a link is clicked inside a WebView.
 
-Beyond this README, you can get a good feel for the callbacks from the [Javadoc](http://turbolinks.github.io/turbolinks-android/) and the [demo app](/demoapp).
+Beyond this `README`, you can get a good feel for the callbacks from the [Javadoc](http://turbolinks.github.io/turbolinks-android/) and the [demo app](/demoapp).
 
 ### 3. Get the Default TurbolinksSession and Visit a Location
 
@@ -119,7 +119,7 @@ In more complex apps, you'll most likely want to do some routing logic here. Sho
 
 #### onPageFinished
 
-This is a callback that's executed at the end of the standard [WebViewClient's onPageFinished](http://developer.android.com/reference/android/webkit/WebViewClient.html#onPageFinished(android.webkit.WebView, java.lang.String)) method.
+This is a callback that's executed at the end of the standard [WebViewClient's onPageFinished](http://developer.android.com/reference/android/webkit/WebViewClient.html#onPageFinished(android.webkit.WebView,%20java.lang.String)) method.
 
 This callback will only be fired once upon cold booting. If there is any action you need to take after the first full page load is complete, just once, this is the place to do it.
 
@@ -133,7 +133,7 @@ It's similar conceptually to onPageFinished, except this callback will be called
 
 #### onReceivedError
 
-This is a callback that's executed at the end of the standard [WebViewClient's onReceivedError](http://developer.android.com/reference/android/webkit/WebViewClient.html#onReceivedError(android.webkit.WebView, int, java.lang.String, java.lang.String)) method.
+This is a callback that's executed at the end of the standard [WebViewClient's onReceivedError](http://developer.android.com/reference/android/webkit/WebViewClient.html#onReceivedError(android.webkit.WebView,%20int,%20java.lang.String,%20java.lang.String)) method.
 
 **We recommend you implement this method.** Otherwise, your user will see an endless progress view/spinner without something that handles the error. You can handle the error however you like -- send the user to a different page, show a native error screen, etc.
 
@@ -283,7 +283,7 @@ Turbolinks Android was created by [Dan Kim](https://twitter.com/dankim) and [Jay
 #### From Android Studio:
 
 - Open the [project's Gradle file](build.gradle).
-- In the menu, choose Build --> Rebuild project.
+- In the menu, choose `Build` --> `Rebuild project`.
 
 #### From command line:
 
