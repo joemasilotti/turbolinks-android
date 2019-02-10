@@ -164,8 +164,6 @@ public class TurbolinksView extends FrameLayout {
                 previousTurbolinksView.screenshotView();
 
             try {
-
-            try {
                 // This is an admittedly hacky workaround, but it buys us some time as we investigate
                 // a potential bug with Chrome 64, which is currently throwing an IllegalStateException
                 // when accessibility services (like Talkback or 1password) are enabled.
@@ -173,11 +171,9 @@ public class TurbolinksView extends FrameLayout {
                 // https://bugs.chromium.org/p/chromium/issues/detail?id=806108
                 previousRefreshLayout.removeView(webView);
             } catch (Exception e) {
-                TurbolinksLog.e("Error removing webview from parent: " + ex.toString());
+                TurbolinksLog.e("Error removing webview from parent: " + e.toString());
                 previousRefreshLayout.removeView(webView);
             }
-        }
-
         }
 
         // Set the webview background to match the container background
